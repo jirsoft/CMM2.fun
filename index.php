@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 <style>
 body
 {
 	background-color: Black;
-	font-family: Copperplate, Papyrus, fantasy;
+	font-family: 'Audiowide', sans-serif;
 }
 .navbar 
 {
@@ -66,7 +67,7 @@ body
   margin: 10px;
   text-align: center;
   line-height: 40px;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 
@@ -85,7 +86,7 @@ body
   margin: 5px;
   padding: 5px;
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
 }
 </style>
 </head>
@@ -125,9 +126,9 @@ if ($result)
 <div class="navbar">
 	<div>HOME</div>
 </div>
-<div style="line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
+<div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
 CMM2 APP LIBRARY
-<span style="line-height: 50%;font-size: 32px;"><br>Food for your Colour Maximite 2</span>
+<span style="font-size: 32px;"><br>Food for your pet</span>
 </div>
 
 <div class="flex-row">
@@ -140,6 +141,7 @@ CMM2 APP LIBRARY
 
 <div class="flex-container">
 <div><a href="listApps.php" style="color:cyan;text-decoration: none;">ALL</div>
+<div><a href="listApps.php?sort=1&limit=5" style="color:cyan;text-decoration: none;">LAST 5</div>
 
 <?php
 	for ($i = 1; $i <= count($cats); $i++)

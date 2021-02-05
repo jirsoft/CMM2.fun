@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 <style>
 body
 {
 	background-color: Black;
-	font-family: Copperplate, Papyrus, fantasy;
+	font-family: Arial, Helvetica, sans-serif;
 }
 .navbar 
 {
+	font-family: 'Audiowide', sans-serif;
 	overflow: hidden;
 	margin-right: 5px;
 	background-image: url("banner.jpg");
@@ -79,6 +81,11 @@ body
   font-size: 16px;
 }
 
+.flex-row a:hover 
+{
+  background: brown;
+}
+
 .flex-row > img
 {
   width: 30%;
@@ -89,6 +96,7 @@ body
 }
 .flex-total
 {
+  font-family: 'Audiowide', sans-serif;
   display: flex;
   align-items: stretch;
   background-color: brown;
@@ -102,7 +110,7 @@ body
   margin: 5px;
   padding: 5px;
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
 }
 
 </style>
@@ -173,9 +181,9 @@ if ($result)
 	?>
 	</div>
 </div>
-<div style="line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
+<div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
 CMM2 APP LIBRARY
-<span style="line-height: 50%;font-size: 32px;"><br>Food for your Colour Maximite 2</span>
+<span style="font-size: 32px;"><br>Food for your pet</span>
 </div>
 
 <div class="flex-total">
@@ -217,8 +225,8 @@ if ($result) {
 				</a>
 				<div style="flex-grow: 3">
 					<span><b>
-						'; echo '<a href="' . $row['link'] .'" style="color:cyan;text-decoration: none;" target="_blank" title="Go to download">';
-						echo $row['title'] . ' v' . $row['version'] . '</a>';
+						'; echo '<a href="' . $row['link'] .'" style="color:cyan;" target="_blank" title="Go to download">';
+						echo $row['title'] . ' ' . $row['version'] . '</a>';
 						if ($row['author'] != 1)
 						{
 							$sql1= "SELECT * FROM authors WHERE id=" . $row['author'];
@@ -226,14 +234,14 @@ if ($result) {
 							if ($result1)
 								if ($row1 = mysql_fetch_assoc($result1))
 									if ($row1['contact'] != '')
-										echo '</b> by <b><a href="' . $row1['contact'] . '" style="color:cyan;text-decoration: none;" target="_blank" title="Visit author">' . $row1['author'] . '</a>';
+										echo '</b> by <b><a href="' . $row1['contact'] . '" style="color:cyan;" target="_blank" title="Visit author">' . $row1['author'] . '</a>';
 									else
 										echo '</b> by <b>' . $row1['author'];
 						}
 						echo ' </b>(' . strtoupper($cats[$row['category']]) . ', updated ' . date("d-m-Y H:i:s", strtotime($row['changed'])) . ')';
 						echo '
 					<br></span>
-					<span style="font-style: italic;">
+					<span style="font-style: italic;color:white;">
 						';
 						echo $row['subtitle'];
 						echo '
