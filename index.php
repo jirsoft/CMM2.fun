@@ -5,6 +5,7 @@
 body
 {
 	background-color: Black;
+	font-family: Copperplate, Papyrus, fantasy;
 }
 .navbar 
 {
@@ -51,14 +52,11 @@ body
   color: White;
 }
 
-.main 
-{
-  
-}
 .flex-container {
   display: flex;
   flex-wrap: wrap;
   background-color: black;
+  justify-content: center;
 }
 
 .flex-container > div {
@@ -76,31 +74,53 @@ body
 {
   display: flex;
   align-items: stretch;
-  background-color: Black;
-  width: 400;
+  background-color: brown;
+  width: 100%;
+  justify-content: center;
 }
 
 .flex-row > div
 {
-  color: Cyan;
-  background-color: Black;
+  color: yellow;
   margin: 5px;
   padding: 5px;
-  text-align: left;
-  font-size: 16px;
-}
-
-.flex-row > img
-{
-  width: 30%;
-  max-width: 200px;
-  height: 30%;
-  padding: 5px;
-  display: block;
+  text-align: center;
+  font-size: 25px;
 }
 </style>
 </head>
 <body>
+<?php
+$link = mysql_connect('wm135.wedos.net', 'w25758_cmm2', 'phP_phP_phP_1')
+   or die('Could not connect: ' . mysql_error());
+     
+mysql_select_db('d25758_cmm2') or die('Could not select database');
+
+$cats = array();
+$links = array();
+
+$sql= "SELECT * FROM categories ORDER BY id";
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  while ($row = mysql_fetch_assoc($result))
+  {
+  	$cats[$row['id']] = $row['category'];
+  	$links[$row['id']] = 'listApps.php?cat=' . $row['id'];
+	}
+
+$cnt = 'TOTAL ';
+$sql= "SELECT COUNT(*) AS totalApps FROM apps";
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  if ($row = mysql_fetch_assoc($result))
+  	$cnt .= $row['totalApps'] . ' APP(S)';
+  	
+$sql= "SELECT COUNT(*) AS totalAuthors FROM authors";
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  if ($row = mysql_fetch_assoc($result))
+  	$cnt .= ' FROM ' . ($row['totalAuthors'] - 1) . ' AUTHOR(S)';
+?>
 
 <div class="navbar">
 	<div>HOME</div>
@@ -110,24 +130,20 @@ CMM2 APP LIBRARY
 <span style="line-height: 50%;font-size: 32px;"><br>Food for your Colour Maximite 2</span>
 </div>
 
+<div class="flex-row">
+	<div>
+<?php
+		echo $cnt;	
+?>
+	</div>
+</div>
+
 <div class="flex-container">
 <div><a href="listApps.php" style="color:cyan;text-decoration: none;">ALL</div>
-<?php
-$link = mysql_connect('wm135.wedos.net', 'w25758_cmm2', 'phP_phP_phP_1')
-   or die('Could not connect: ' . mysql_error());
-     
-mysql_select_db('cmm2') or die('Could not select database');
 
-$cats = array();
-$sql= "SELECT * FROM categories ORDER BY id";
-$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-if ($result)
-  while ($row = mysql_fetch_assoc($result))
-  {
-  	$cats[$row['id']] = $row['category'];
-  	$box = strtoupper($row['category']);
-  	echo '<div><a href="listApps.php?cat=' . $row['id'] . '" style="color:cyan;text-decoration: none;">' . $box . '</div>';
-	}
+<?php
+	for ($i = 1; $i <= count($cats); $i++)
+		echo '<div><a href="' . $links[$i] . '" style="color:cyan;text-decoration: none;">' . strtoupper($cats[$i]) . '</div>';	
 ?>
 </div>
 

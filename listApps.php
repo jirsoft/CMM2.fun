@@ -5,6 +5,7 @@
 body
 {
 	background-color: Black;
+	font-family: Copperplate, Papyrus, fantasy;
 }
 .navbar 
 {
@@ -51,9 +52,13 @@ body
   color: Yellow;
 }
 
-.main 
-{
-  
+.thumbnail:hover {
+    position:relative;
+    top: 0px;
+    left: 100px;
+    transform: scale(2);;
+    display:block;
+    z-index:999;
 }
 
 .flex-row
@@ -82,6 +87,24 @@ body
   padding: 5px;
   display: block;
 }
+.flex-total
+{
+  display: flex;
+  align-items: stretch;
+  background-color: brown;
+  width: 100%;
+  justify-content: center;
+}
+
+.flex-total > div
+{
+  color: yellow;
+  margin: 5px;
+  padding: 5px;
+  text-align: center;
+  font-size: 25px;
+}
+
 </style>
 </head>
 <body>
@@ -89,7 +112,7 @@ body
 $link = mysql_connect('wm135.wedos.net', 'w25758_cmm2', 'phP_phP_phP_1')
    or die('Could not connect: ' . mysql_error());
      
-mysql_select_db('cmm2') or die('Could not select database');
+mysql_select_db('d25758_cmm2') or die('Could not select database');
 
 $cats = array();
 $sql= "SELECT * FROM categories ORDER BY id";
@@ -131,6 +154,15 @@ if ($cat > 0)
 if ($list == 'APPLICATIONS')
 	$list = 'ALL APPLICATIONS';
 
+$cnt = 'SHOWN ';
+if ($cat > 0 )
+	$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category=" . $cat . " ORDER BY " . $order;
+else
+	$sql= "SELECT COUNT(*) AS totalApps FROM apps ORDER BY " . $order;
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  if ($row = mysql_fetch_assoc($result))
+  	$cnt .= $row['totalApps'] . ' APP(S)';
 ?>
 
 <div class="navbar">
@@ -146,11 +178,26 @@ CMM2 APP LIBRARY
 <span style="line-height: 50%;font-size: 32px;"><br>Food for your Colour Maximite 2</span>
 </div>
 
+<div class="flex-total">
+	<div>
+<?php
+		echo $cnt;	
+?>
+	</div>
+</div>
 
 <div class="main">
 
 <?php
     
+$cats = array();
+
+$sql= "SELECT * FROM categories ORDER BY id";
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  while ($row = mysql_fetch_assoc($result))
+  	$cats[$row['id']] = $row['category'];
+
 //get data from database
 if ($cat > 0 )
 	$sql= "SELECT * FROM apps WHERE category=" . $cat . " ORDER BY " . $order;
@@ -162,7 +209,7 @@ if ($result) {
   {
 		echo '
 			<div class="flex-row">
-					<img style="max-width: 200px;" src="data:image/jpg;charset=utf8;base64,
+					<img style="max-width: 200px;"  class="thumbnail" src="data:image/jpg;charset=utf8;base64,
 					';
 					echo base64_encode($row['screen']); 
 					echo '
@@ -170,7 +217,7 @@ if ($result) {
 				</a>
 				<div style="flex-grow: 3">
 					<span><b>
-						'; echo '<a href="' . $row['link'] .'" style="color:cyan;text-decoration: none;" target="_blank" title="Visit page with code">';
+						'; echo '<a href="' . $row['link'] .'" style="color:cyan;text-decoration: none;" target="_blank" title="Go to download">';
 						echo $row['title'] . ' v' . $row['version'] . '</a>';
 						if ($row['author'] != 1)
 						{
@@ -183,7 +230,7 @@ if ($result) {
 									else
 										echo '</b> by <b>' . $row1['author'];
 						}
-						echo ' </b>(last update ' . date("d-m-Y H:i:s",strtotime($row['changed'])) . ')';
+						echo ' </b>(' . strtoupper($cats[$row['category']]) . ', updated ' . date("d-m-Y H:i:s", strtotime($row['changed'])) . ')';
 						echo '
 					<br></span>
 					<span style="font-style: italic;">
