@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>CMM2.fun APP LIST</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W51W8H18JG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W51W8H18JG');
+</script>
+
 <style>
 body
 {
@@ -83,15 +95,14 @@ body
 
 .flex-row a:hover 
 {
-  background: brown;
+  background: black;
 }
 
 .flex-row > img
 {
-  width: 30%;
-  max-width: 200px;
+  width: 200px;
+  max-width: 220px;
   height: 30%;
-  padding: 5px;
   display: block;
 }
 .flex-total
@@ -117,10 +128,10 @@ body
 </head>
 <body>
 <?php
-$link = mysql_connect('wm135.wedos.net', 'w25758_cmm2', 'phP_phP_phP_1')
+require_once 'db.php';
+$link = mysql_connect(DB_HOST, DB_USER, DB_PASS)
    or die('Could not connect: ' . mysql_error());
-     
-mysql_select_db('d25758_cmm2') or die('Could not select database');
+mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
 
 $cats = array();
 $sql= "SELECT * FROM categories ORDER BY id";
@@ -146,11 +157,12 @@ if(isset($_GET['limit']))
 	$limit = $_GET['limit'];
 if ($limit > 0)
 {
-	$list .= $limit . ' APPLICATIONS';
+	$list .= $limit . ' PROGRAMS';
 	$order .= ' LIMIT ' . $limit;
+	$cnt = 'SHOWN ' . $limit . ' PRG(S)';
 }
 else
-	$list .= 'APPLICATIONS';
+	$list .= 'PROGRAMS';
 
 $cat = 0;
 if(isset($_GET['cat']))
@@ -159,18 +171,22 @@ if(isset($_GET['cat']))
 if ($cat > 0)
 	$list .= ' FROM CATEGORY ' . strtoupper($cats[$cat]);
 	
-if ($list == 'APPLICATIONS')
-	$list = 'ALL APPLICATIONS';
+if ($list == 'PROGRAMS')
+	$list = 'ALL PROGRAMS';
 
-$cnt = 'SHOWN ';
-if ($cat > 0 )
-	$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category=" . $cat . " ORDER BY " . $order;
-else
-	$sql= "SELECT COUNT(*) AS totalApps FROM apps ORDER BY " . $order;
-$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-if ($result)
-  if ($row = mysql_fetch_assoc($result))
-  	$cnt .= $row['totalApps'] . ' APP(S)';
+if ($limit == 0) 
+{
+	if ($cat > 0 )
+		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category=" . $cat . " ORDER BY " . $order;
+	else
+		$sql= "SELECT COUNT(*) AS totalApps FROM apps ORDER BY " . $order;
+	
+	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+	if ($result)
+		if ($row = mysql_fetch_assoc($result))
+			$cnt = 'SHOWN ' . $row['totalApps'] . ' PRG(S)';
+}
+
 ?>
 
 <div class="navbar">
@@ -182,7 +198,7 @@ if ($result)
 	</div>
 </div>
 <div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
-CMM2 APP LIBRARY
+CMM2 PRG LIBRARY
 <span style="font-size: 32px;"><br>Food for your pet</span>
 </div>
 
@@ -215,14 +231,17 @@ $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result) {
   while ($row = mysql_fetch_assoc($result))
   {
-		echo '
-			<div class="flex-row">
-					<img style="max-width: 200px;"  class="thumbnail" src="data:image/jpg;charset=utf8;base64,
-					';
-					echo base64_encode($row['screen']); 
-					echo '
-					">
-				</a>
+		echo '<div class="flex-row">';
+				if ($row['scr_path'] != '')
+				{
+					echo '<a href="screens/' . $row['scr_path'] . '" target="_blank">';
+					echo '<img style="max-width: 200px;" class="thumbnail" src="screens/' . $row['scr_path'] . '">';
+					echo '</a>';
+				}
+				else
+					echo '<img style="max-width: 200px;" src="screens/MissingScreenshot.jpg">';
+				
+				echo '
 				<div style="flex-grow: 3">
 					<span><b>
 						'; echo '<a href="' . $row['link'] .'" style="color:cyan;" target="_blank" title="Go to download">';
@@ -245,7 +264,33 @@ if ($result) {
 						';
 						echo $row['subtitle'];
 						echo '
-					<br><br></span>
+					<br></span>
+					';
+					$rating = $row['rating'];
+					$id = $row['id'];
+					$rate = 'rateApp.php?id=' . $id;
+					if ($rating >= 1)
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add STAR to app"></a>';
+					else
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add STAR to app"></a>';
+					if ($rating >= 10)
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add STAR to app"></a>';
+					else
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add STAR to app"></a>';
+					if ($rating >= 100)
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add STAR to app"></a>';
+					else
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add STAR to app"></a>';
+					if ($rating >= 500)
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add STAR to app"></a>';
+					else
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add STAR to app"></a>';
+					if ($rating >= 1000)
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add STAR to app"></a>';
+					else
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add STAR to app"></a>';
+					
+					echo '
 					<div style="text-align: justify;color: White;">
 						';
 						echo $row['description'];
