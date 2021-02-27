@@ -41,6 +41,8 @@
 		$link = substr(addslashes($_POST["link"]), 0, 200);
 		if (substr($category, -1) == ',')
 			$category = substr($category, 0, strlen($category) - 1);
+		if ($category == '')
+			$category = '1';
 		$name = '';
 	
 		if ($title != '')
@@ -59,76 +61,70 @@
 			if ($new_author == '')
 				echo 'New author have to have name!';			
 			else
-			{
-				//$contact = addslashes($new_author . ' (' . $contact . ')');
-				if (getimagesize($_FILES['screen']['tmp_name']) == false)
+			{	
+				if ($_FILES['screen']['tmp_name'] != '')
 				{
-					echo "<br>Screenshot needs to be an IMAGE!";
-				} 
-				else 
-				{
-					//declare variables
-					$image = $_FILES['screen']['tmp_name'];
-					$name = basename($_FILES['screen']['name']);
-					$image = base64_encode(file_get_contents(addslashes($image)));
-					$target_dir = "new_screens/";
-					//date("YmdHis")
-					$ext = '.' . end(explode('.', $name));
-					$name = basename($name, $ext);
-					$name =  $name . '_' . date("YmdHis") . $ext;
-					$target_file = $target_dir . $name;
-					$uploadOk = 1;
-					$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-					// Check if image file is a actual image or fake image
-					if(isset($_POST["submit"]))
+					if (getimagesize($_FILES['screen']['tmp_name']) == false)
+						echo "<br>Screenshot needs to be an IMAGE!";
+					else 
 					{
-						$check = getimagesize($image);
-						if($check !== false)
-							$uploadOk = 1;
-						else
+						//declare variables
+						$image = $_FILES['screen']['tmp_name'];
+						$name = basename($_FILES['screen']['name']);
+						$image = base64_encode(file_get_contents(addslashes($image)));
+						$target_dir = "new_screens/";
+						//date("YmdHis")
+						$ext = '.' . end(explode('.', $name));
+						$name = basename($name, $ext);
+						$name =  $name . '_' . date("YmdHis") . $ext;
+						$target_file = $target_dir . $name;
+						$uploadOk = 1;
+						$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+						// Check if image file is a actual image or fake image
+						if(isset($_POST["submit"]))
 						{
-							echo "Screenshot is not an image.<br>";
+							$check = getimagesize($image);
+							if($check != false)
+								$uploadOk = 1;
+							else
+							{
+								echo "Screenshot is not an image.<br>";
+								$uploadOk = 0;
+							}
+						}
+						// Check file size
+						if ($_FILES["screen"]["size"] > 524288)
+						{
+							echo "Sorry, your screenshot is too large (max 500kB)<br>";
 							$uploadOk = 0;
 						}
-					}
-					// Check if file already exists
-					//if (file_exists($target_file))
-					//{
-					//	echo "Sorry, screenshot already exists.";
-					//	$uploadOk = 0;
-					//}
-					// Check file size
-					if ($_FILES["screen"]["size"] > 524288)
-					{
-						echo "Sorry, your screenshot is too large (max 500kB)<br>";
-						$uploadOk = 0;
-					}
-					// Allow certain file formats
-					if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-					&& $imageFileType != "gif" )
-					{
-						echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed as screenhot<br>";
-						$uploadOk = 0;
-					}
-					// Check if $uploadOk is set to 0 by an error
-					if ($uploadOk != 0)
-					{
-						if (move_uploaded_file($_FILES["screen"]["tmp_name"], $target_file)) 
+						// Allow certain file formats
+						if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+						&& $imageFileType != "gif" )
 						{
-							echo "The sceenshot ". htmlspecialchars( basename($name)). " has been uploaded<br>";
+							echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed as screenhot<br>";
+							$uploadOk = 0;
+						}
+						// Check if $uploadOk is set to 0 by an error
+						if ($uploadOk != 0)
+						{
+							if (move_uploaded_file($_FILES["screen"]["tmp_name"], $target_file)) 
+							{
+								echo "The sceenshot ". htmlspecialchars( basename($name)). " has been uploaded<br>";
+							}
 						}
 					}
-				}
-				
+				}				
+
 				if ($uploadOk == 0)
 					$name = '';
 				$sql = 'INSERT INTO  shadow (title,version,author,new_author,contact,scr_path,subtitle,description,link,category) ';
 				$sql .= 'VALUES("' . $title . '","' . $version . '",' . $author . ',"' . $new_author . '","' . $contact . '","' . $name .'","' . $subtitle . '","' . $description . '","' . $link . '","' . $category . '")';
-				echo '<hr>' . $sql;
+				//echo '<hr>' . $sql;
 				$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 				if ($result)
 				{
-					echo '<br>NEW APP added into DB and is waiting for approval as record #' . ($rows + 1) . ':<br>';
+					echo '<br>NEW RECORD added into DB and is waiting for approval as record #' . ($rows + 1) . ':<br>';
 					echo '<b>' . $title . ' ' . $version . '</b><br>';
 					echo '<b>Subtitle: </b>' . $subtitle . '<br><br>';
 					echo '<b>Description: </b>' . $description . '<br>';
@@ -137,6 +133,13 @@
 					if ($name != '' && $uploadOk)
 						echo '<b>Screenshot: </b>' . $name . '<br>';
 					echo '<b>Author: </b>' . $author . ' (' . $new_author . ',' . $contact . ')<br>';
+					
+					// send email
+					$msg = "Somebody added new record into shadow DB. Please approve or deny it\r\n";
+					$msg = wordwrap($msg, 70);
+					$mailto = "jirsoft@cmm2.fun";
+					mail($mailto, "Somebody added new record into shadow DB. Please approve or deny it",$msg);
+					echo "Mail was sent to " . $mailto . "<br>";
 				}
 			}
 		}
@@ -147,7 +150,7 @@
 <script>
 	setTimeout(function(){
 		window.location.href = '/';
-	}, 10000);
+	}, 15000);
 </script>
 </body>
 </html>		
