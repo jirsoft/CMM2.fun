@@ -174,13 +174,13 @@ $sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   if ($row = mysql_fetch_assoc($result))
-  	$cnt .= $row['totalApps'] . ' ITEM(S)';
+  	$cnt .= $row['totalApps'] . ' ITEMS';
   	
 $sql= "SELECT COUNT(*) AS totalAuthors FROM authors";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   if ($row = mysql_fetch_assoc($result))
-  	$cnt .= ' FROM ' . ($row['totalAuthors'] - 1) . ' AUTHOR(S)';
+  	$cnt .= ' FROM ' . ($row['totalAuthors'] - 1) . ' AUTHORS';
 ?>
 
 <div class="navbar">

@@ -176,7 +176,7 @@ if ($result)
 $list = '';
 $order = 'title ASC';			// alphabet
 if(isset($_GET['sort']))
-	$sort = $_GET['sort'];
+	$sort = intval($_GET['sort']);
 if ($sort == 1)
 {
 	$list .= 'NEWEST ';
@@ -190,7 +190,7 @@ elseif ($sort == 2)
 	
 $limit - 0;
 if(isset($_GET['limit']))
-	$limit = $_GET['limit'];
+	$limit = intval($_GET['limit']);
 if ($limit > 0)
 {
 	$list .= $limit . ' ITEMS';
@@ -308,17 +308,17 @@ if ($result) {
 					$id = $row['id'];
 					$rate = 'rateApp.php?id=' . $id;
 					if ($rating >= 1)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					if ($rating >= 5)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					if ($rating >= 25)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					if ($rating >= 100)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					if ($rating >= 500)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					if ($rating >= 1000)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (already ' . $rating . ')"></a>';
+						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
 					/*
 					if ($rating >= 1)
 						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
