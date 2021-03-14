@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!JirSoft 2021, v0.10>
 <html>
 <head>
 	<title>CMM2.fun HOME</title>
@@ -184,7 +185,7 @@ if ($result)
 
 <div class="navbar">
 	<div>HOME</div>
-	<a href="newApp.php">ADD PRG</a>
+	<a href="newApp.php">ADD ITEM</a>
 </div>
 <div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -260px;;font-size: 64px;">
 CMM2 LIBRARY

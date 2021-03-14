@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<!JirSoft 2021, v0.10>
 <html>
 <head>
 	<title>CMM2.fun ADD APP</title>
@@ -318,7 +320,7 @@
 <body>
 <div class="navbar">
 	<a href="index.php">HOME</a>
-	<div>ADD PRG</div>
+	<div>ADD ITEM</div>
 </div>
 <div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -60px;font-size: 32px;">
 CMM2 LIBRARY

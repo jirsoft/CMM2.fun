@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<!JirSoft 2021, v0.10>
 <html>
 <head<
 <!-- Global site tag (gtag.js) - Google Analytics -->
