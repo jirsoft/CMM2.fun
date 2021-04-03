@@ -152,171 +152,172 @@
   color: yellow; 
   background-color: gray;
 }
-		input[type=text]
-		{
-			background-color: gray;
-			color: cyan;
-			padding: 5px 16px;
-			border: 1px solid yellow;
-			font-size: 20px;
-		}
-		textarea
-		{
-			width: 100%;
-			height: 200px;
-			padding: 5px 16px;
-			box-sizing: border-box;
-			border: 1px solid yellow;
-			color: cyan;
-			font-size: 20px;
-			background-color: gray;
-			resize: none;
-		}
-		input[type="submit"]
-		{
-			background-color: gray;
-			border: none;
-			color: yellow;
-			padding: 5px 16px;
-			text-decoration: none;
-			font-size: 20px;
-			cursor: pointer;
-			font-family: 'Audiowide', sans-serif;
-		}
-		.file-name
-		{
-			font-size: 16px;
-			color: cyan;
-		}
-		.customFile::-webkit-file-upload-button
-		{
-			visibility: hidden;
-		}
-		
-		.customFile::before
-		{
-			content: 'Screenshot file';
-			label: 'max 500kB';
-			background-color: gray;
-			padding: 5px 40px;
-			margin: 5px;
-			color: yellow;
-			outline: none;
-			white-space: nowrap;
-			-webkit-user-select: none;
-			cursor: pointer;
-			font-size: 20px;
-			font-family: 'Audiowide', sans-serif;
-		}
-		.customFile:hover::before
-		{
-			background-color: yellow;
-			color: black;
-			cursor: pointer;
-		}
-		.customFile:active::before
-		{
-			background-color: black;
-			color: yellow;
-			cursor: pointer;
-		}
-		body
-		{
-			background-color: Black;
-			color: White;
-			font-family: 'Audiowide', sans-serif;
-		}
-		
-		.navbar 
-		{
-			overflow: hidden;
-			margin-right: 5px;
-			background-image: url("banner.jpg");
-			background-repeat: no-repeat;
-			background-size: auto;
-			background-position: center;
-			background-color: Brown;
-			position: sticky;
-			top: 0;
-			height: 60px;
-			width: 100%;
-		}
-		.navbar a 
-		{
-			float: left;
-			display: fixed;
-			color: yellow;
-			text-align: center;
-			margin-top: 32px;
-			padding: 5px 16px;
-			text-decoration: none;
-			font-size: 20px;
-		}
-		.navbar div 
-		{
-			float: left;
-			display: fixed;
-			color: #d0d0d0;
-			text-align: center;
-			margin-top: 32px;
-			padding: 5px 16px;
-			text-decoration: none;
-			font-size: 20px;
-		}
-		.navbar a:hover 
-		{
-			background: black;
-			color: yellow;
-		}
-		.flex-container {
-			display: flex;
-			flex-wrap: wrap;
-			background-color: black;
-			justify-content: center;
-		}
-		.flex-container > div {
-			background-color: gray;
-			color: cyan;
-			width: 150px;
-			margin: 10px;
-			text-align: center;
-			line-height: 40px;
-			font-size: 20px;
-		}
-		.flex-row
-		{
-			display: flex;
-			align-items: stretch;
-			background-color: brown;
-			width: 100%;
-			justify-content: center;
-		}
-		.flex-row > div
-		{
-			color: yellow;
-			margin: 5px;
-			padding: 5px;
-			text-align: center;
-			font-size: 20px;
-		}
-		.description
-		{
-			background-color:black;
-			color:white;
-			font-family: Arial, Helvetica, sans-serif;
-			margin-left: 5px;
-			margin-right: 5px;
-			margin-top: 10px;
-			margin-bottom: 10px;
-			padding: 5px;
-			text-align: justify;
-			text-justify: inter-word;
-		}
-		.description > a
-		{
-			color:yellow;
-		}
-	</style></head>
+
+input[type=text]
+{
+	background-color: gray;
+	color: cyan;
+	padding: 5px 16px;
+	border: 1px solid yellow;
+	font-size: 20px;
+}
+textarea
+{
+	width: 100%;
+	height: 200px;
+	padding: 5px 16px;
+	box-sizing: border-box;
+	border: 1px solid yellow;
+	color: cyan;
+	font-size: 20px;
+	background-color: gray;
+	resize: none;
+}
+input[type="submit"]
+{
+	background-color: gray;
+	border: none;
+	color: yellow;
+	padding: 5px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	cursor: pointer;
+	font-family: 'Audiowide', sans-serif;
+}
+.file-name
+{
+	font-size: 16px;
+	color: cyan;
+}
+.customFile::-webkit-file-upload-button
+{
+	visibility: hidden;
+}
+
+.customFile::before
+{
+	content: 'Screenshot file';
+	label: 'max 500kB';
+	background-color: gray;
+	padding: 5px 40px;
+	margin: 5px;
+	color: yellow;
+	outline: none;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	cursor: pointer;
+	font-size: 20px;
+	font-family: 'Audiowide', sans-serif;
+}
+.customFile:hover::before
+{
+	background-color: yellow;
+	color: black;
+	cursor: pointer;
+}
+.customFile:active::before
+{
+	background-color: black;
+	color: yellow;
+	cursor: pointer;
+}
+body
+{
+	background-color: Black;
+	color: White;
+	font-family: 'Audiowide', sans-serif;
+}
+
+.navbar 
+{
+	overflow: hidden;
+	margin-right: 5px;
+	background-image: url("banner.jpg");
+	background-repeat: no-repeat;
+	background-size: auto;
+	background-position: center;
+	background-color: Brown;
+	position: sticky;
+	top: 0;
+	height: 60px;
+	width: 100%;
+}
+.navbar a 
+{
+	float: left;
+	display: fixed;
+	color: yellow;
+	text-align: center;
+	margin-top: 32px;
+	padding: 5px 16px;
+	text-decoration: none;
+	font-size: 20px;
+}
+.navbar div 
+{
+	float: left;
+	display: fixed;
+	color: #d0d0d0;
+	text-align: center;
+	margin-top: 32px;
+	padding: 5px 16px;
+	text-decoration: none;
+	font-size: 20px;
+}
+.navbar a:hover 
+{
+	background: yellow;
+	color: black;
+}
+.flex-container {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: black;
+	justify-content: center;
+}
+.flex-container > div {
+	background-color: gray;
+	color: cyan;
+	width: 150px;
+	margin: 10px;
+	text-align: center;
+	line-height: 40px;
+	font-size: 20px;
+}
+.flex-row
+{
+	display: flex;
+	align-items: stretch;
+	background-color: brown;
+	width: 100%;
+	justify-content: center;
+}
+.flex-row > div
+{
+	color: yellow;
+	margin: 5px;
+	padding: 5px;
+	text-align: center;
+	font-size: 20px;
+}
+.description
+{
+	background-color:black;
+	color:white;
+	font-family: Arial, Helvetica, sans-serif;
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 5px;
+	text-align: justify;
+	text-justify: inter-word;
+}
+.description > a
+{
+	color:yellow;
+}
+</style></head>
 <body>
 <div class="navbar">
 	<a href="index.php">HOME</a>

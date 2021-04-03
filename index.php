@@ -74,8 +74,8 @@
 
 		.navbar a:hover, a:active 
 		{
-			background: black;
-			color: Yellow;
+			background: yellow;
+			color: black;
 		}
 
 		.flex-container
