@@ -2,7 +2,7 @@
 <!JirSoft 2021, v0.10>
 <html>
 <head>
-	<title>CMM2.fun: ITEM LIST</title>
+	<title>CMM2.fun: ITEM FROM AUTHOR</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 	<meta charset="utf-8">
 	<meta name="Description" content="Colour Maximite 2 programs library, list of most of the programs created for this computer">
@@ -174,61 +174,42 @@ if ($result)
   	$cats[$row['id']] = $row['category'];
 	}
 	
-$list = '';
-$order = 'title ASC';			// alphabet
-if(isset($_GET['sort']))
-	$sort = intval($_GET['sort']);
-if ($sort == 1)
-{
-	$list .= 'NEWEST ';
-	$order = 'changed DESC';  // newest
-}
-elseif ($sort == 2)
-{
-	$list .= 'TOP LIKED ';
-	$order = 'rating DESC';  // best rated
-}
-	
-$limit - 0;
-if(isset($_GET['limit']))
-	$limit = intval($_GET['limit']);
-if ($limit > 0)
-{
-	$list .= $limit . ' ITEMS';
-	$order .= ' LIMIT ' . $limit;
-	//$cnt = 'SHOWN ' . $limit . ' PRG(S)';
-}
-else
-	$list .= 'ITEMS';
+$authors = array();
+$sql= "SELECT * FROM authors ORDER BY id";
+$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+if ($result)
+  while ($row = mysql_fetch_assoc($result))
+  {
+  	$authors[$row['id']] = $row['author'];
+	}
 
-$cat = 0;
-if(isset($_GET['cat']))
-	$cat = $_GET['cat'];
+$list = 0;
+$id = 0;			// alphabet
+if(isset($_GET['id']))
+	$id = intval($_GET['id']);
 
-if ($cat > 0)
-	$list .= ' FROM CATEGORY ' . strtoupper($cats[$cat]);
-	
-if ($list == 'ITEMS')
-	$list = 'ALL ITEMS';
-
-if ($limit == 0) 
+if ($id != 0) 
 {
-	if ($cat > 0 )
-		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0";
-	else
-		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0";
+	$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE author=" . $id;
 	
 	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 	if ($result)
 		if ($row = mysql_fetch_assoc($result))
-			//$cnt = 'SHOWN ' . $row['totalApps'] . ' PRG(S)';
-			$list .= ' (SHOWN ' . $row['totalApps'] . ')';
-}
+			$list = $row['totalApps'];
 
+	if ($id != 0)
+	{
+		if ($list > 1)
+			$list .= ' ITEMS FROM ' . $authors[$id];
+		else
+			$list .= ' ITEM FROM ' . $authors[$id];		
+	}
+}
 ?>
 
 <div class="navbar">
 	<a href="index.php">HOME</a>
+	<a href="listAuthors.php">AUTHORS</a>
 	<div>
 	<?php
 	echo $list;
@@ -253,11 +234,7 @@ if ($result)
   	$cats[$row['id']] = $row['category'];
 
 //get data from database
-if ($cat > 0 )
-	//$sql= "SELECT * FROM apps WHERE enabled>0 AND category=" . $cat . " ORDER BY " . $order;
-	$sql= "SELECT * FROM apps WHERE enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0 ORDER BY " . $order;
-else
-	$sql= "SELECT * FROM apps WHERE enabled>0 ORDER BY " . $order;
+$sql= "SELECT * FROM apps WHERE author=" . $id . " ORDER BY title";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result) {
   while ($row = mysql_fetch_assoc($result))
