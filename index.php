@@ -90,7 +90,7 @@
 		{
 			background-color: gray;
 			color: yellow;
-			width: 150px;
+			width: 200px;
 			margin: 10px;
 			text-align: center;
 			line-height: 40px;
@@ -176,14 +176,15 @@ mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
 
 $cats = array();
 $links = array();
-
-$sql= "SELECT * FROM categories ORDER BY id";
+$id = 1;
+$sql= "SELECT * FROM categories ORDER BY category";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   while ($row = mysql_fetch_assoc($result))
   {
-  	$cats[$row['id']] = $row['category'];
-  	$links[$row['id']] = 'listApps.php?cat=' . $row['id'];
+  	$cats[$id] = $row['category'];
+  	$links[$id] = 'listApps.php?cat=' . $row['id'];
+  	$id++;
 	}
 
 $cnt = 'TOTAL ';
@@ -197,7 +198,7 @@ $sql= "SELECT COUNT(*) AS totalAuthors FROM authors";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   if ($row = mysql_fetch_assoc($result))
-  	$cnt .= ' FROM ' . ($row['totalAuthors'] - 1) . ' <a href=listAuthors.php>AUTHORS</a>';
+  	$cnt .= ' FROM <a href=listAuthors.php>' . ($row['totalAuthors'] - 1) . ' AUTHORS</a>';
 ?>
 
 <div class="navbar">
@@ -210,7 +211,7 @@ CMM2 LIBRARY
 </div>
 
 <div class="description">
-	This site should be something like <b>INDEX</b> to most of the programs written for	<a href="https://geoffg.net/maximite.html" target="_blank">Colour Maximite 2 computer</a>. 
+	This site should be something like <b>INDEX</b> to most of the important items for	<a href="https://geoffg.net/maximite.html" target="_blank">Colour Maximite 2 computer</a> (programs, documents, add-ons...). 
 	The link is pointing to the home page of CMM2's <i>father</i>, Geoff Graham, where you can find all the details, 
 	so now just short introduction of this computer:
 	<br>
@@ -227,7 +228,7 @@ CMM2 LIBRARY
 	<br>
 	If you are enjoying this site, take a look also to the <a href="https://www.thebackshed.com/forum/ViewForum.php?FID=16" target="_blank">The Back Shed forum</a>, there you will find everything else...
 	<br>
-	<img src="JirSoft.png" style="width:80px; float:right;">
+	<a href="mailto:jirsoft@cmm2.fun"><img src="JirSoft.png" style="width:80px; float:right;"></a>
 	<br>
 	<br>
 </div>

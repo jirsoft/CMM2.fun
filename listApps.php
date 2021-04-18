@@ -71,7 +71,7 @@
 
 		.thumbnail:hover {
 				position:relative;
-				top: 0px;
+				top: 100px;
 				left: 100px;
 				transform: scale(2);;
 				display:block;
