@@ -161,7 +161,8 @@ $authors = array();
 $ids = array();
 $id = 1;
 
-$sql= "SELECT * FROM authors ORDER BY author";
+//$sql= "SELECT * FROM authors ORDER BY author";
+$sql= "SELECT author, id FROM authors WHERE id IN (SELECT author FROM apps) ORDER BY authors.author";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
 	while ($row = mysql_fetch_assoc($result))

@@ -131,13 +131,13 @@
 			color: White;
 		}
 		
-		.description > a
+		.description > a, .rating > a
 		{
 			color: yellow;
 			text-decoration: none;
 		}
 
-		.description > a:hover
+		.description > a:hover, .rating > a:hover
 		{
 			color: black;
 			background-color: yellow;
@@ -307,52 +307,38 @@ if ($result) {
 					';
 					$rating = $row['rating'];
 					$id = $row['id'];
-					$rate = 'rateApp.php?id=' . $id;
+					$cururi = $_SERVER['REQUEST_URI'];
+					$rate = "rateApp.php?id=" . $id . "&url='" . $cururi . "'";
+					echo '<div class="rating">';
 					if ($rating >= 1)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smileS.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+					//else
+						//echo '<img style="max-width: 16px;" src="smileS.png" title="at least 1 smile-point">';
 					if ($rating >= 5)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smileS.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+					//else
+						//echo '<img style="max-width: 16px;" src="smileS.png" title="at least 5 smile-points">';
 					if ($rating >= 25)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smileS.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+					//else
+						//echo '<img style="max-width: 16px;" src="smileS.png" title="at least 25 smile-points">';
 					if ($rating >= 100)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smileS.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+					//else
+						//echo '<img style="max-width: 16px;" src="smileS.png" title="at least 100 smile-points">';
 					if ($rating >= 500)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smileS.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+					//else
+						//echo '<img style="max-width: 16px;" src="smileS.png" title="at least 500 smile-points">';
 					if ($rating >= 1000)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="smile.png" title="Add 1 smiling point (now ' . $rating . ')"></a>';
-					/*
-					if ($rating >= 1)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
+						echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+
+					if ($rating > 0)
+						echo " <a href=$rate>I like it too!</a>";
 					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add 1 point to rating"></a>';
-					if ($rating >= 5)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add 1 point to rating"></a>';
-					if ($rating >= 25)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add 1 point to rating"></a>';
-					if ($rating >= 100)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add 1 point to rating"></a>';
-					if ($rating >= 500)
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="fullStar.png" title="Add 1 point to rating"></a>';
-					else
-						echo '<a href="' . $rate . '"><img style="max-width: 16px;" src="emptyStar.png" title="Add 1 point to rating"></a>';
-						*/
-					//echo '<span style="color: gray;"> (' . $rating . ')</span>';
+						echo " <a href=$rate>I like it!</a>";
+					echo '</div>';
+
 					echo '<p><div class="description">';
 						echo $row['description'];
 					echo '</div>

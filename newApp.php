@@ -333,19 +333,23 @@ CMM2 LIBRARY
 		mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
 		$authors = array();
 		$contacts = array();
+    $ids = array();
+    $id = 2;
 		$sql= 'SELECT * FROM authors ORDER BY author ASC';
 		$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 		if ($result)
 		{
 			while ($row = mysql_fetch_assoc($result))
 			{
-				$authors[$row['id']] = $row['author'];
-				$contacts[$row['id']] = $row['contact'];
+				$authors[$id] = $row['author'];
+				$ids[$id] = $row['id'];
+				$contacts[$id] = $row['contact'];
+				$id++;
 				//echo $authors[$row['id']] . ':' . $contacts[$row['id']] . '<br>';
 			}
 		}
-		$authors['1'] = 'NEW AUTHOR';
-		$contacts['1'] = '';
+		$authors[1] = 'NEW AUTHOR';
+		$contacts[1] = '';
 	?>
 	<br> * REQUIRED FIELDs<br><br>
 	<form name="addPrg" action="insertNewApp.php"  onsubmit="return validateForm()" method="post" enctype="multipart/form-data">
@@ -393,7 +397,7 @@ CMM2 LIBRARY
 				for ($i = 1; $i <= count($authors); $i++)
 				{
 					$au = $authors[$i]; if ($contacts[$i] != '') $au .= ' {' . $contacts[$i] . '}';
-					echo '<option value="' . $i . '">' . $au . '</option>';
+					echo '<option value="' . $ids[$i] . '">' . $au . '</option>';
 				}
 			echo '</select><br>';
 			?>		

@@ -16,7 +16,10 @@
 <body>
 <?php
 	$id = $_GET["id"];
-	//echo $id . '<br>';
+	$url = $_GET["url"];
+	$url = 'https://cmm2.fun' . substr($url, 1);
+	if (substr($url, -1) == "'")
+		$url = substr($url, 0, -1);
 	require_once 'db.php';
 	$link = mysql_connect(DB_HOST, DB_USER, DB_PASS)
 		 or die('Could not connect: ' . mysql_error());
@@ -25,7 +28,8 @@
 	$sql = 'UPDATE apps SET rating=rating+1 WHERE id=' . $id;
 	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 	
-	echo "<script>window.location = 'listApps.php'</script>";
+	echo "<script>window.location = '" . $url . "'</script>";
+	//echo $url;
 ?>
 </body>
 </html>
