@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!JirSoft 2021, v0.10>
+<!JirSoft 2021, v0.11>
 <html>
 <head<
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -15,6 +15,7 @@
 
 <body>
 <?php
+	$ip = $_SERVER['REMOTE_ADDR'];
 	$id = $_GET["id"];
 	$url = $_GET["url"];
 	$url = 'https://cmm2.fun' . substr($url, 1);
@@ -27,7 +28,11 @@
   
 	$sql = 'UPDATE apps SET rating=rating+1 WHERE id=' . $id;
 	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-	
+	if ($result)
+	{
+		require_once 'insertEvent.php';
+		insertEvent('R+', $id, $ip);
+	}
 	echo "<script>window.location = '" . $url . "'</script>";
 	//echo $url;
 ?>

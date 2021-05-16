@@ -86,6 +86,14 @@
 			justify-content: center;
 		}
 
+		.donate-buttons
+		{
+			display: flex;
+			flex-wrap: wrap;
+			background-color: black;
+			justify-content: center;
+		}
+
 		.flex-container > a
 		{
 			background-color: gray;
@@ -226,12 +234,23 @@ CMM2 LIBRARY
 		<hr>
 	</div>
 	<br>
-	If you are enjoying this site, take a look also to the <a href="https://www.thebackshed.com/forum/ViewForum.php?FID=16" target="_blank">The Back Shed forum</a>, there you will find everything else...
+	If you are enjoying this site, take a look also to the <a href="https://www.thebackshed.com/forum/ViewForum.php?FID=16" target="_blank">The Back Shed forum</a>, there you will find answers to everything about CMM2.
+	Many informations useful for CMM2 users can be found also on <a href="http://fruitoftheshed.com/Colour%20MaxiMite%202%20(CMM2).Example-games-and-other-programs.ashx" target="_blank">Fruit Of The Shed</a> site...
 	<br>
 	<a href="mailto:jirsoft@cmm2.fun"><img src="JirSoft.png" style="width:80px; float:right;"></a>
 	<br>
-	<br>
 </div>
+<div class="donate-buttons">
+	<a href="https://www.patreon.com/bePatron?u=54377077" data-patreon-widget-type="become-patron-button">Patron</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+	&nbsp;&nbsp;&nbsp;<form action="https://www.paypal.com/donate" method="post" target="_top">
+		<input type="hidden" name="business" value="2ZNDW7WB6NXEC" />
+		<input type="hidden" name="item_name" value="CMM2.fun" />
+		<input type="hidden" name="currency_code" value="USD" />
+		<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+		<img alt="" border="0" src="https://www.paypal.com/en_CZ/i/scr/pixel.gif" width="1" height="1" />
+	</form>
+</div>
+<br>
 
 <div class="flex-row">
 	<div>
@@ -245,7 +264,7 @@ CMM2 LIBRARY
 <div class="flex-container">
 	<a href="listApps.php">ALL</a>
 	<a href="listApps.php?sort=2&limit=10">TOP 10</a>
-	<a href="listApps.php?sort=1&limit=10">LAST 10</a>
+	<a href="listApps.php?sort=1&limit=25">LAST 25</a>
 
 	<?php
 		for ($i = 1; $i <= count($cats); $i++)

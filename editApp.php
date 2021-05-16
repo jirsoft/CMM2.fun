@@ -2,7 +2,7 @@
 <!JirSoft 2021, v0.10>
 <html>
 <head>
-	<title>CMM2.fun: ADD ITEM</title>
+	<title>CMM2.fun: EDIT ITEM</title>
 	<meta charset="utf-8">
 	<meta name="Description" content="Colour Maximite 2 programs library, list of most of the programs created for this computer">
 	<meta name="keywords" content="CMM2,MMBasic,Colour Maximite 2,Color Maximite 2,retro,">
@@ -41,70 +41,18 @@
 		
 		function validateForm()
 		{
-			if (document.forms["addPrg"]["title"].value == "")
-			{
-				alert("'Title' must be filled out");
-				return false;
-			}
-			if (document.forms["addPrg"]["link"].value == "")
+			if (document.forms["editPrg"]["link"].value == "")
 			{
 				alert("'Download at' must be filled out");
 				return false;
 			}
-			if ((document.forms["addPrg"]["link"].value.substring(0, 7).toLowerCase() != "http://") && (document.forms["addPrg"]["link"].value.substring(0, 8).toLowerCase() != "https://"))
+			if ((document.forms["editPrg"]["link"].value.substring(0, 7).toLowerCase() != "http://") && (document.forms["editPrg"]["link"].value.substring(0, 8).toLowerCase() != "https://"))
 			{
 				alert("'Download at' must start with 'http://' or 'https://'");
 				return false;
 			}
-			if (document.forms["addPrg"]["author"].value == 1)
-			{
-				if (document.forms["addPrg"]["new_author"].value == "")		
-				{
-					alert("'New name' must be filled out when 'NEW AUTHOR' selected");
-					return false;
-				}
-			}
 		}
-		
-		function validateFile()
-		{
-			const fi = document.getElementById('screen');
-			// Check if any file is selected.
-			if (fi.files.length > 0)
-			{
-				for (const i = 0; i <= fi.files.length - 1; i++)
-				{
- 					const fsize = fi.files.item(i).size;
- 					const fname = fi.files.item(i).name;
-					const file = Math.round((fsize / 1024));
-					// The size of the file.
-					if (file > 500)
-					{
-						alert("File too big, please select a file less than 500kB, this one has " + file + "kB!");
-					}
-					else
-						document.getElementById('fileInfo').innerHTML = '   ' + fname + ' (' + file + 'kB)';
-				}
-			}
-		}
-		
-		function authorSelected()
-		{
-			txt = document.getElementById("author").options[document.getElementById("author").selectedIndex].text;
-			ind = txt.indexOf('{');
-			if (ind < 0)
-			{
-				auth = txt;
-				cnt = '';
-			}
-			else
-			{
-				auth = txt.substr(0, ind - 1);
-				cnt = txt.substr(ind + 1, txt.length - ind - 2);
-			}
-			document.getElementById('new_author').value = auth;
-			document.getElementById('contact').value = cnt;
-		}
+				
 		</script>
 	<style>
 /* class applies to select element itself, not a wrapper element */
@@ -157,8 +105,10 @@ input[type=text]
 {
 	background-color: gray;
 	color: cyan;
+	width: 100%;
 	padding: 5px 16px;
 	border: 1px solid yellow;
+	box-sizing: border-box;
 	font-size: 20px;
 }
 textarea
@@ -321,7 +271,7 @@ body
 <body>
 <div class="navbar">
 	<a href="index.php">HOME</a>
-	<div>ADD ITEM</div>
+	<div>EDIT ITEM</div>
 </div>
 <div style="text-shadow: 2px 2px brown;font-family: 'Audiowide', sans-serif;line-height: 90%;padding-left: 100px;position: fixed; color: White; margin-top: -60px;font-size: 32px;">
 CMM2 LIBRARY
@@ -331,81 +281,49 @@ CMM2 LIBRARY
 		$link = mysql_connect(DB_HOST, DB_USER, DB_PASS)
 			 or die('Could not connect: ' . mysql_error());
 		mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
-		$authors = array();
-		$contacts = array();
-    $ids = array();
-    $id = 2;
-		$sql= 'SELECT * FROM authors ORDER BY author ASC';
-		$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-		if ($result)
+		
+		if(isset($_GET['id']))
 		{
-			while ($row = mysql_fetch_assoc($result))
-			{
-				$authors[$id] = $row['author'];
-				$ids[$id] = $row['id'];
-				$contacts[$id] = $row['contact'];
-				$id++;
-				//echo $authors[$row['id']] . ':' . $contacts[$row['id']] . '<br>';
-			}
-		}
-		$authors[1] = 'NEW AUTHOR';
-		$contacts[1] = '';
-	?>
-	<br> * REQUIRED FIELDs<br><br>
-	<form name="addPrg" action="insertNewApp.php"  onsubmit="return validateForm()" method="post" enctype="multipart/form-data">
-		Title *<br><input type="text" name="title">&nbsp;&nbsp;&nbsp;<br>
-		Version <br><input type="text" name="version">&nbsp;&nbsp;&nbsp;<br>
-		Subtitle <br><input type="text" name="subtitle"><br><br>
-		Description <br><textarea name="description" rows="25" cols="80" style="resize:none"></textarea><br>
-		<br>Choose a file (max 500kB)<span class="file-name" id="fileInfo"></span><br>
-		<input type="file" id="screen" name="screen" class="customFile" onchange="validateFile()">
-		<br><br>
-		Download at (link to file) *<br><input type="text" name="link" width=200px><br><br>
-		Category (check all that apply)<br>
-			<?php
-				$countCat = 1;
-				$sql= 'SELECT * FROM categories ORDER BY id ASC';
-				$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-				echo '<table style="width:100%"><tr>';
-				if ($result)
-					while ($row = mysql_fetch_assoc($result))
-					{
-						echo '<td>';
-						echo '<input type="checkbox" name="category' . $row['id'] . '" value="' . $row['id'] . '"';
-						if ($row['id'] == 1)
-							echo ' checked>';
-						else
-							echo '>';
-						echo '<span class="checkmark"></span>';
-						echo '<label for category' . $row['id'] . ' class "container"> ' . strtoupper($row['category']);
-						echo '</label></td>';
-						//<input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-						//<label for="vehicle3"> I have a boat</label>
-						$countCat++;
-						if ($countCat == 5)
-						{
-							$countCat = 1;
-							echo '</tr>';
-						}
-					}
-				echo '</table>';
-			?>
-		<hr>
-			<label for="author">Author </label>
-			<?php
-			echo '<select class="select-css" id="author" name="author" onchange="authorSelected()">';
-				for ($i = 1; $i <= count($authors); $i++)
+			$id = intval($_GET['id']);
+			$sql= "SELECT * FROM apps WHERE id=" . $id;
+			$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+			if ($result)
+				if ($row = mysql_fetch_assoc($result))
 				{
-					$au = $authors[$i]; if ($contacts[$i] != '') $au .= ' {' . $contacts[$i] . '}';
-					echo '<option value="' . $ids[$i] . '">' . $au . '</option>';
+					$title = $row['title'];
+					$subtitle = $row['subtitle'];
+					$version = $row['version'];
+					$scr_path = $row['scr_path'];
+					$description = $row['description'];
+					$description = str_replace("<br>", "\n", $description);
+					$description = str_replace("<p>", "\n\n", $description);
+					$link = $row['link'];
+					$author = '???';
+					
+					$sql= 'SELECT * FROM authors WHERE id=' . $row['author'];
+					$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
+					if ($result)
+						if ($row1 = mysql_fetch_assoc($result))
+							$author = $row1['author'];
+							
+					echo '<br>';
+					echo $title . ' by ' . $author . '<br>';
+
+					echo '<hr>';
+					
+					$cururi = $_SERVER['REQUEST_URI'];
+					echo '<form name="editPrg" action="editExistingApp.php?id=' . $id . '&url=' . $cururi . '" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">';
+					echo 'Subtitle<br><input type="text" name="subtitle" value="' . $subtitle . '">&nbsp;&nbsp;&nbsp;<br>';
+					echo 'Version<br><input type="text" name="version" value="' . $version . '">&nbsp;&nbsp;&nbsp;<br>';
+					echo 'Description<br><textarea name="description" rows="25" cols="80" style="resize:none">' . $description . '</textarea><br>';
+					echo 'Download<br><input type="text" name="link" value="' . $link . '">&nbsp;&nbsp;&nbsp;<br>';
+					echo '<input id="submit" type="submit" value="Update record in DB" onmouseover="submitOver()" onmouseout="submitOut()">';
+					echo '</form>';
+							
 				}
-			echo '</select><br>';
-			?>		
-			New name <input style="left:150px;position:absolute;width:500px" type="text" name="new_author" id="new_author"><br>
-			<br>(required only if <span style="color:cyan;">NEW AUTHOR</span> selected)<br>
-			<br>New contact <input style="left:150px;position:absolute;width:500px" type="text" name="contact" id="contact"><br><br>
-		<hr>
-		<input id="submit" type="submit" value="Upload new record into DB" onmouseover="submitOver()" onmouseout="submitOut()">
-	</form>
+  	}
+  ?>
+  		
+  		
 </body>
 </html>					

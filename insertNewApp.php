@@ -33,13 +33,20 @@
 
 	if ($rows < 20)
 	{
-		$title = substr(addslashes($_POST["title"]), 0, 200);
-		$subtitle = substr(addslashes($_POST["subtitle"]), 0, 200);
-		$version = substr(addslashes($_POST["version"]), 0, 200);
+		$title = substr($_POST["title"], 0, 200);
+		$title = htmlspecialchars($title, ENT_QUOTES);
+		$subtitle = substr($_POST["subtitle"], 0, 200);
+		$subtitle = htmlspecialchars($subtitle, ENT_QUOTES);
+		$version = substr($_POST["version"], 0, 200);
+		$version = htmlspecialchars($version, ENT_QUOTES);
 		$author = $_POST["author"];
-		$new_author = substr(addslashes($_POST["new_author"]), 0, 200);
+		if ($author=='')
+			$author = 1;
+		$new_author = substr($_POST["new_author"], 0, 200);
+		$new_author = htmlspecialchars($new_author, ENT_QUOTES);
 		$contact = substr(addslashes($_POST["contact"]), 0, 200);
-		$description = substr(addslashes($_POST["description"]), 0, 2000);
+		$description = substr($_POST["description"], 0, 2000);
+		$description = htmlspecialchars($description, ENT_QUOTES);
 		$link = substr(addslashes($_POST["link"]), 0, 200);
 		if (substr($category, -1) == ',')
 			$category = substr($category, 0, strlen($category) - 1);
@@ -120,8 +127,8 @@
 
 				if ($uploadOk == 0)
 					$name = '';
-				$sql = 'INSERT INTO  shadow (title,version,author,new_author,contact,scr_path,subtitle,description,link,category) ';
-				$sql .= 'VALUES("' . $title . '","' . $version . '",' . $author . ',"' . $new_author . '","' . $contact . '","' . $name .'","' . $subtitle . '","' . $description . '","' . $link . '","' . $category . '")';
+				$sql = 'INSERT INTO  shadow (action,title,version,author,new_author,contact,scr_path,subtitle,description,link,category) ';
+				$sql .= 'VALUES("N","' . $title . '","' . $version . '",' . $author . ',"' . $new_author . '","' . $contact . '","' . $name .'","' . $subtitle . '","' . $description . '","' . $link . '","' . $category . '")';
 				//echo '<hr>' . $sql;
 				$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 				if ($result)
@@ -137,10 +144,10 @@
 					echo '<b>Author: </b>' . $author . ' (' . $new_author . ',' . $contact . ')<br>';
 					
 					// send email
-					$msg = "Somebody added new record into shadow DB. Please approve or deny it\r\n";
+					$msg = $new_author . " ADDED NEW record (" . $title . " " . $version . ") into shadow DB. Please approve or deny it\r\n";
 					$msg = wordwrap($msg, 70);
 					$mailto = "jirsoft@cmm2.fun";
-					mail($mailto, "Somebody added new record into shadow DB. Please approve or deny it",$msg);
+					mail($mailto, $new_author . " ADDED NEW record (" . $title . " " . $version . ") into shadow DB", $msg);
 					echo "Mail was sent to " . $mailto . "<br>";
 				}
 			}
