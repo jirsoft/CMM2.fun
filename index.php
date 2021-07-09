@@ -173,6 +173,12 @@
 			background-color: yellow;
 		}
 
+		.blinking
+		{
+			color:brown;
+		}
+		
+		
 	</style>
 </head>
 <body>
@@ -185,7 +191,7 @@ mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
 $cats = array();
 $links = array();
 $id = 1;
-$sql= "SELECT * FROM categories ORDER BY category";
+$sql= "SELECT * FROM categories WHERE id>0 ORDER BY category";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   while ($row = mysql_fetch_assoc($result))
@@ -196,7 +202,7 @@ if ($result)
 	}
 
 $cnt = 'TOTAL ';
-$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0";
+$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category<>'0' AND enabled>0";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result)
   if ($row = mysql_fetch_assoc($result))
@@ -262,9 +268,10 @@ CMM2 LIBRARY
 
 
 <div class="flex-container">
-	<a href="listApps.php">ALL</a>
+	<a href="listIdeas.php"><span class="blinking">IDEAS</span></a>
 	<a href="listApps.php?sort=2&limit=10">TOP 10</a>
 	<a href="listApps.php?sort=1&limit=25">LAST 25</a>
+	<a href="listApps.php">ALL</a>
 
 	<?php
 		for ($i = 1; $i <= count($cats); $i++)

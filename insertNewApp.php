@@ -127,6 +127,7 @@
 
 				if ($uploadOk == 0)
 					$name = '';
+				
 				$sql = 'INSERT INTO  shadow (action,title,version,author,new_author,contact,scr_path,subtitle,description,link,category) ';
 				$sql .= 'VALUES("N","' . $title . '","' . $version . '",' . $author . ',"' . $new_author . '","' . $contact . '","' . $name .'","' . $subtitle . '","' . $description . '","' . $link . '","' . $category . '")';
 				//echo '<hr>' . $sql;

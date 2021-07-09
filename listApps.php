@@ -304,9 +304,9 @@ if ($list == 'ITEMS')
 if ($limit == 0) 
 {
 	if ($cat > 0 )
-		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0";
+		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category<>'0' AND enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0";
 	else
-		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE enabled>0";
+		$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category<>'0' AND enabled>0";
 	
 	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 	if ($result)
@@ -371,9 +371,9 @@ if ($result)
 //get data from database
 if ($cat > 0 )
 	//$sql= "SELECT * FROM apps WHERE enabled>0 AND category=" . $cat . " ORDER BY " . $order;
-	$sql= "SELECT * FROM apps WHERE enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0 ORDER BY " . $order;
+	$sql= "SELECT * FROM apps WHERE category<>'0' AND enabled>0 AND FIND_IN_SET(" . $cat . ", category)>0 ORDER BY " . $order;
 else
-	$sql= "SELECT * FROM apps WHERE enabled>0 ORDER BY " . $order;
+	$sql= "SELECT * FROM apps WHERE category<>'0' AND enabled>0 ORDER BY " . $order;
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result) {
   while ($row = mysql_fetch_assoc($result))
@@ -381,9 +381,14 @@ if ($result) {
 		echo '<div class="flex-row">';
 				if ($row['scr_path'] != '')
 				{
-					echo '<a href="screens/' . $row['scr_path'] . '" target="_blank">';
-					echo '<img style="max-width: 200px;" class="thumbnail" src="screens/' . $row['scr_path'] . '">';
-					echo '</a>';
+					if ($row['scr_path'] == 'Shell.jpg')
+						echo '<img style="max-width: 200px;" src="screens/Shell.jpg">';
+					else
+					{
+						echo '<a href="screens/' . $row['scr_path'] . '" target="_blank">';
+						echo '<img style="max-width: 200px;" class="thumbnail" src="screens/' . $row['scr_path'] . '">';
+						echo '</a>';
+					}
 				}
 				else
 					echo '<img style="max-width: 200px;" src="screens/Missing.jpg">';
@@ -408,10 +413,11 @@ if ($result) {
 							$result1 = mysql_query($sql1) or die('Query failed: ' . mysql_error());
 							if ($result1)
 								if ($row1 = mysql_fetch_assoc($result1))
-									if ($row1['contact'] != '')
-										echo '</b> by <b><a class="titleAuthor" href="' . $row1['contact'] . '" target="_blank" title="Visit author">' . $row1['author'] . '</a>';
-									else
-										echo '</b> by <b>' . $row1['author'];
+									echo '</b> by <b><a class="titleAuthor" href=listAuthor.php?id=' . $row['author'] . ' title="All contributions from ' . $row1['author'] . '">' . $row1['author'] . '</a>';
+									//if ($row1['contact'] != '')
+									//	echo '</b> by <b><a class="titleAuthor" href="' . $row1['contact'] . '" target="_blank" title="Visit author">' . $row1['author'] . '</a>';
+									//else
+									//	echo '</b> by <b>' . $row1['author'];
 						}
 						echo ' </b>(';
 						$cat = explode(',', $row['category']);

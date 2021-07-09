@@ -2,7 +2,7 @@
 <!JirSoft 2021, v0.11>
 <html>
 <head>
-	<title>CMM2.fun: LIST AUTHORs ITEMs</title>
+	<title>CMM2.fun: LIST IDEAs</title>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide">
 	<meta charset="utf-8">
 	<meta name="Description" content="Colour Maximite 2 programs library, list of most of the programs created for this computer">
@@ -18,7 +18,7 @@
 		gtag('config', 'G-W51W8H18JG');
 	</script>
 	<style>
-		#myBtn {
+		#topButton {
 			display: none;
 			position: fixed;
 			bottom: 20px;
@@ -34,16 +34,37 @@
 			border-radius: 4px;
 		}
 
-		#myBtn:hover {
+		#topButton:hover {
 			background-color: yellow;
 			color: black;
 		}
 
+		#nextButton {
+			display: none;
+			position: fixed;
+			bottom: 20px;
+			right: 100px;
+			z-index: 99;
+			font-size: 18px;
+			border: none;
+			outline: none;
+			background-color: #555;
+			color: yellow;
+			cursor: pointer;
+			padding: 15px;
+			border-radius: 4px;
+		}
+
+		#nextButton:hover {
+			background-color: yellow;
+			color: black;
+		}
 		body
 		{
 			background-color: Black;
 			font-family: Arial, Helvetica, sans-serif;
 		}
+		
 		.navbar 
 		{
 			font-family: 'Audiowide', sans-serif;
@@ -92,7 +113,7 @@
 
 		.thumbnail:hover {
 				position:relative;
-				top: 0px;
+				top: 100px;
 				left: 100px;
 				transform: scale(2);;
 				display:block;
@@ -176,6 +197,7 @@
 			color:black;
 			background: yellow;
 		}
+		
 		.superScript
 		{
 			vertical-align: super;
@@ -192,19 +214,26 @@
 	</style>
 </head>
 <body>
-<button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
+<button onclick="topFunction()" id="topButton" title="Go to top">Top</button>
+<button onclick="nextFunction()" id="nextButton" title="Next Page">>></button>
 <script>
 	//Get the button
-	var mybutton = document.getElementById("myBtn");
+	var topbutton = document.getElementById("topButton");
+	var nextbutton = document.getElementById("nextButton");
 
 	// When the user scrolls down 20px from the top of the document, show the button
 	window.onscroll = function() {scrollFunction()};
 
-	function scrollFunction() {
-		if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-			mybutton.style.display = "block";
-		} else {
-			mybutton.style.display = "none";
+	function scrollFunction() 
+	{
+		//nextbutton.style.display = "block";
+		if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) 
+		{
+			topbutton.style.display = "block";
+		} 
+		else 
+		{
+			topbutton.style.display = "none";
 		}
 	}
 
@@ -213,59 +242,36 @@
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	}
+	
+	function nextFunction() {
+		document.body.scrollTop = document.body.scrollTop + window.innerHeight - 100;
+		document.documentElement.scrollTop = document.documentElement.scrollTop + window.innerHeight - 100;
+	}
 </script>
+
 <?php
 require_once 'db.php';
 $link = mysql_connect(DB_HOST, DB_USER, DB_PASS)
    or die('Could not connect: ' . mysql_error());
 mysql_select_db(DB_NAME) or die('Could not select database ' . DB_NAME);
 
-$cats = array();
-$sql= "SELECT * FROM categories WHERE id>0 ORDER BY id";
-$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-if ($result)
-  while ($row = mysql_fetch_assoc($result))
-  {
-  	$cats[$row['id']] = $row['category'];
-	}
-	
-$authors = array();
-$sql= "SELECT * FROM authors ORDER BY id";
-$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-if ($result)
-  while ($row = mysql_fetch_assoc($result))
-  {
-  	$authors[$row['id']] = $row['author'];
-	}
 
-$list = 0;
-$id = 0;			// alphabet
-if(isset($_GET['id']))
-	$id = intval($_GET['id']);
-
-if ($id != 0) 
+if ($limit == 0) 
 {
-	$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category<>'0' AND author=" . $id;
+	$sql= "SELECT COUNT(*) AS totalApps FROM apps WHERE category='0' AND enabled>0";
 	
 	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 	if ($result)
 		if ($row = mysql_fetch_assoc($result))
-			$list = $row['totalApps'];
-
-	if ($id != 0)
-	{
-		if ($list > 1)
-			$list .= ' CONTRIBUTIONS FROM ' . $authors[$id];
-		else
-			$list .= ' CONTRIBUTION FROM ' . $authors[$id];		
-	}
+			//$cnt = 'SHOWN ' . $row['totalApps'] . ' PRG(S)';
+			$list = 'IDEAS (SHOWN ' . $row['totalApps'] . ')';
 }
+
 ?>
 
 <div class="navbar">
 	<a href="index.php">HOME</a>
-	<a href="listAuthors.php">AUTHORS</a>
-	<div>
+	<a href="newIdea.php">ADD IDEA</a>	<div>
 	<?php
 	echo $list;
 	?>
@@ -305,73 +311,22 @@ function isFile($pth)
 	else
 		return (false);
 }
-    
-$cats = array();
 
-$sql= "SELECT * FROM categories ORDER BY id";
-$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-if ($result)
-  while ($row = mysql_fetch_assoc($result))
-  	$cats[$row['id']] = $row['category'];
 
 //get data from database
-$sql= "SELECT * FROM apps WHERE category<>'0' AND author=" . $id . " AND enabled=1 ORDER BY title";
+$sql= "SELECT * FROM apps WHERE category='0' AND enabled>0 ORDER BY rating DESC, title ASC";
 $result = mysql_query($sql) or die('Query failed: ' . mysql_error());
 if ($result) {
   while ($row = mysql_fetch_assoc($result))
   {
 		echo '<div class="flex-row">';
-				if ($row['scr_path'] != '')
-				{
-					if ($row['scr_path'] == 'Shell.jpg')
-						echo '<img style="max-width: 200px;" src="screens/Shell.jpg">';
-					else
-					{
-						echo '<a href="screens/' . $row['scr_path'] . '" target="_blank">';
-						echo '<img style="max-width: 200px;" class="thumbnail" src="screens/' . $row['scr_path'] . '">';
-						echo '</a>';
-					}
-				}
-				else
-					echo '<img style="max-width: 200px;" src="screens/Missing.jpg">';
 				
 				echo '
 				<div style="flex-grow: 3">
 					<span><b>
-						'; 
-						if (isFile($row['link']))
-						{
-							echo '<a class="titleAuthor" href="' . $row['link'] .'" download title="Download file ' . $row['link'] . '">';
-							echo $row['title'] . ' ' . $row['version'] . '</a>';							
-						}
-						else
-						{
-							echo '<a class="titleAuthor" href="' . $row['link'] .'" target="_blank" title="Go to download">';
-							echo $row['title'] . ' ' . $row['version'] . '</a>';
-						}
-						if ($row['author'] != 1)
-						{
-							$sql1= "SELECT * FROM authors WHERE id=" . $row['author'];
-							$result1 = mysql_query($sql1) or die('Query failed: ' . mysql_error());
-							if ($result1)
-								if ($row1 = mysql_fetch_assoc($result1))
-									if ($row1['contact'] != '')
-										echo '</b> by <b><a class="titleAuthor" href="' . $row1['contact'] . '" target="_blank" title="Visit ' . $row1['author'] . '">' . $row1['author'] . '</a>';
-									else
-										echo '</b> by <b>' . $row1['author'];
-						}
-						echo ' </b>(';
-						$cat = explode(',', $row['category']);
-						$catlist = '';
-						foreach ($cat as $catid)
-						{
-							$catlist .= '<a class="titleAuthor" href="listApps.php?cat=' . $catid . '">' . strtoupper($cats[$catid]) . '</a>/';
-						}
-						if (substr($catlist, -1) == '/')
-							$catlist = substr($catlist, 0, strlen($catlist) - 1);				
-						echo $catlist;
-						echo ', updated ' . date("d-m-Y H:i:s", strtotime($row['changed'])) . ')';
-						echo ' <a class="superScript" href="editApp.php?id=' . $row['id'] . '">UPDATE</a>';
+						';
+							echo $row['title'] . '</a>';							
+						echo ' </b>';
 						echo '
 					<br></span>
 					<span style="font-style: italic;color:white;">
@@ -386,19 +341,19 @@ if ($result) {
 					$rate = "rateApp.php?id=" . $id . "&url='" . $cururi . "'";
 					echo '<div class="rating">';
 						if ($rating >= 1)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 						if ($rating >= 5)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 						if ($rating >= 25)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 						if ($rating >= 100)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 						if ($rating >= 500)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 						if ($rating >= 1000)
-							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
+							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 
-						echo " <a class='superScript' href=$rate>ADD 1 smile-point</a>";
+						echo " <a class='superScript' href=$rate>ADD 1 wish-point</a>";
 					echo '</div>';
 
 					echo '<p><div class="description">';

@@ -192,9 +192,11 @@ CMM2 LIBRARY
 		$link = 'index.php';
 		for ($i = 1; $i <= count($authors); $i++)
 			if ($items[$i] > 1)
-				echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . strtoupper($authors[$i]) . '<br><span style="color:black">' . $items[$i] . ' contributions</span></a>';
+				//echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . strtoupper($authors[$i]) . '<br><span style="color:black">' . $items[$i] . ' contributions</span></a>';
+				echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . $authors[$i] . '<br><span style="color:black">' . $items[$i] . ' contributions</span></a>';
 			else
-				echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . strtoupper($authors[$i]) . '<br><span style="color:black">' . $items[$i] . ' contribution</span></a>';
+				//echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . strtoupper($authors[$i]) . '<br><span style="color:black">' . $items[$i] . ' contribution</span></a>';
+				echo '<a href="listAuthor.php?id=' . $ids[$i] . '">' . $authors[$i] . '<br><span style="color:black">' . $items[$i] . ' contribution</span></a>';
 	?>
 </div>
 
