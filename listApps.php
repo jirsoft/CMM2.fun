@@ -457,7 +457,11 @@ if ($result) {
 						if ($rating >= 1000)
 							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' smile-point(s)">';
 
-						echo " <a class='superScript' href=$rate>ADD 1 smile-point</a>";
+						echo " <a class='superScript' href=$rate>ADD 1 smile-point";
+						if ($rating > 0)
+							echo " to the already granted " . $rating . "</a>";
+						else
+							echo "</a>";
 					echo '</div>';
 
 					echo '<p><div class="description">';
