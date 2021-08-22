@@ -348,6 +348,13 @@ function replaceLinks($d)
 		}
 		$nd = $nn;
 	}
+	$nd = str_replace("[b]", "<b>", $nd);
+	$nd = str_replace("[/b]", "</b>", $nd);
+	$nd = str_replace("[i]", "<i>", $nd);
+	$nd = str_replace("[/i]", "</i>", $nd);
+	$nd = str_replace("[u]", "<u>", $nd);
+	$nd = str_replace("[/u]", "</u>", $nd);
+	$nd = str_replace("[o]", "&bull;", $nd);
 	return ($nd);
 }
 

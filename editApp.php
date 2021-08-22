@@ -306,17 +306,15 @@ CMM2 LIBRARY
 						if ($row1 = mysql_fetch_assoc($result))
 							$author = $row1['author'];
 							
-					echo '<br>';
-					echo $title . ' by ' . $author . '<br>';
-
-					echo '<hr>';
-					
+					echo '<br>';					
 					$cururi = $_SERVER['REQUEST_URI'];
 					echo '<form name="editPrg" action="editExistingApp.php?id=' . $id . '&url=' . $cururi . '" onsubmit="return validateForm()" method="post" enctype="multipart/form-data">';
-					echo 'Subtitle<br><input type="text" name="subtitle" value="' . $subtitle . '">&nbsp;&nbsp;&nbsp;<br>';
-					echo 'Version<br><input type="text" name="version" value="' . $version . '">&nbsp;&nbsp;&nbsp;<br>';
+					echo '<input type="text" name="title" value="' . $title . '" readonly> by <input type="text" name="author" value="' . $author . '" readonly><br>';					
+					echo '<hr>';
+					echo 'Subtitle<br><input type="text" name="subtitle" value="' . $subtitle . '"><br>';
+					echo 'Version<br><input type="text" name="version" value="' . $version . '"><br>';
 					echo 'Description<br><textarea name="description" rows="25" cols="80" style="resize:none">' . $description . '</textarea><br>';
-					echo 'Download<br><input type="text" name="link" value="' . $link . '">&nbsp;&nbsp;&nbsp;<br>';
+					echo 'Download<br><input type="text" name="link" value="' . $link . '"><br>';
 					echo '<input id="submit" type="submit" value="Update record in DB" onmouseover="submitOver()" onmouseout="submitOut()">';
 					echo '</form>';
 							

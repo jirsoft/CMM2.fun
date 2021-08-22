@@ -300,6 +300,13 @@ function replaceLinks($d)
 		}
 		$nd = $nn;
 	}
+	$nd = str_replace("[b]", "<b>", $nd);
+	$nd = str_replace("[/b]", "</b>", $nd);
+	$nd = str_replace("[i]", "<i>", $nd);
+	$nd = str_replace("[/i]", "</i>", $nd);
+	$nd = str_replace("[u]", "<u>", $nd);
+	$nd = str_replace("[/u]", "</u>", $nd);
+	$nd = str_replace("[o]", "&bull;", $nd);
 	return ($nd);
 }
 
@@ -353,7 +360,13 @@ if ($result) {
 						if ($rating >= 1000)
 							echo '<img style="max-width: 16px;" src="smile.png" title="' . $rating . ' wish-point(s)">';
 
-						echo " <a class='superScript' href=$rate>ADD 1 wish-point</a>";
+						echo " <a class='superScript' href=$rate>ADD 1 wish-point";
+						if ($rating==1)
+							echo " to first wish</a>";
+						elseif ($rating>0)
+							echo " to " . $rating . " wishes</a>";
+						else
+							echo "</a>";
 					echo '</div>';
 
 					echo '<p><div class="description">';
